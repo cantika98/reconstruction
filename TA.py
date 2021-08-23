@@ -47,7 +47,7 @@ N = 64
 y = compressed
 r = y
 x_pre = np.zeros(N)
-o = []
+Os = []
 i = 0 #iteration
 t = 10 #threshold
 sd = LA.norm(r)
@@ -59,7 +59,6 @@ sd = LA.norm(r)
     # Compute the score of each atoms
 c = np.dot (A.T, r)
 absValues = np.abs (c)
-absValues
         
     #noise level (standard deviation)
 sd = LA.norm(r) / math.sqrt(data)
@@ -67,17 +66,18 @@ sd = LA.norm(r) / math.sqrt(data)
         
     #find the desired indices greater
 tsd = t*sd
-tsd
-a = np.where(absValues<=tsd)
-ind = c[a]      
-o = np.union1d(o, ind)
-size = o.shape
-Ao=A[:,size:]
-Ao
-#x_pre[size] = np.linalg.inv(np.dot(Ao.T,Ao)).dot(Ao.T).dot(y)
+ind = np.where(absValues<=tsd)      
+O = np.union1d(O, ind)
+vector = np.vectorize(np.int) #convert from float to int
+O = vector(O)
+Os.append(O)
+
+Ao = A[:,Os]
+Ao.shape
+#x_pre = np.linalg.inv(Ao.T.dot(Ao)).dot(Ao.T).dot(y)
     #r = y - A.dot(x_pre)
             
-   # i += 1
+    #i += 1
     #print (x_pre[o])
 
 
